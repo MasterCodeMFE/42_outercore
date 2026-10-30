@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ruta 42 + Oposición TAI — La mejor ruta del mundo</title>
+<style>
+  :root{
+    --bg:#0e1418; --panel:#151d23; --panel2:#1a242b; --border:#24333d;
+    --text:#dbe7ee; --muted:#7d93a2; --teal:#00babc; --green:#3ddc84;
+    --yellow:#f2c14e; --orange:#f28f4e; --red:#f87171;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding:24px 12px 60px}
+  .wrap{max-width:1200px;margin:0 auto}
+  h1{font-size:1.7rem;letter-spacing:.5px}
+  h1 span{color:var(--teal)}
+  .sub{color:var(--muted);font-size:.92rem;margin-top:6px}
+  .why{background:linear-gradient(135deg,#112128,#141e26);border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin:18px 0;font-size:.88rem;line-height:1.55}
+  .why b{color:var(--teal)}
+  .why ol{margin:8px 0 0 22px;color:var(--muted)}
+  .why li{margin:3px 0}
+  .legend{color:var(--muted);font-size:.8rem;margin:8px 0 0}
+  .stats{display:flex;gap:12px;flex-wrap:wrap;margin:18px 0}
+  .stat{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:12px 18px;min-width:130px}
+  .stat b{font-size:1.4rem;display:block}
+  .stat small{color:var(--muted)}
+  .s-done b{color:var(--green)}.s-doing b{color:var(--yellow)}.s-pend b{color:var(--muted)}
+  .bar{height:10px;background:var(--panel2);border:1px solid var(--border);border-radius:6px;overflow:hidden;margin-bottom:8px}
+  .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--green),var(--teal));transition:width .3s}
+  .pctl{text-align:center;color:var(--muted);font-size:.8rem;margin-bottom:16px}
+  .tools{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+  .tools input{flex:1;min-width:200px;background:var(--panel);border:1px solid var(--border);color:var(--text);padding:9px 14px;border-radius:8px;font-size:.9rem;outline:none}
+  .tools input:focus{border-color:var(--teal)}
+  .btn{background:var(--panel);border:1px solid var(--border);color:var(--muted);padding:9px 14px;border-radius:8px;font-size:.85rem;cursor:pointer;transition:.15s}
+  .btn:hover,.btn.active{color:var(--teal);border-color:var(--teal)}
+  table{width:100%;border-collapse:collapse;background:var(--panel);border:1px solid var(--border);border-radius:12px;overflow:hidden;font-size:.88rem}
+  thead th{background:var(--panel2);color:var(--teal);text-align:left;padding:12px 10px;font-size:.78rem;text-transform:uppercase;letter-spacing:.8px;border-bottom:2px solid var(--border);position:sticky;top:0;z-index:2}
+  tbody td{padding:10px;border-bottom:1px solid var(--border);vertical-align:middle}
+  tbody tr:hover{background:#1c2730}
+  tr.section th{background:#11212a;color:var(--text);font-size:.85rem;text-align:left;padding:12px 14px;border-bottom:1px solid var(--border);letter-spacing:.6px}
+  tr.section small{color:var(--muted);font-weight:400;display:block;margin-top:2px}
+  .num{color:var(--muted);width:42px;text-align:right;font-variant-numeric:tabular-nums}
+  .name{color:var(--teal);font-weight:600;white-space:nowrap;font-family:'Consolas',monospace}
+  .tag{display:inline-block;padding:2px 9px;border-radius:20px;font-size:.7rem;font-weight:600;letter-spacing:.4px;white-space:nowrap}
+  .t-nucleo{background:#123a4a;color:#6fd3ff}
+  .t-cpp{background:#3a2a5a;color:#c4b5fd}
+  .t-red{background:#0f3d2e;color:#4ade80}
+  .t-unix{background:#453a12;color:#fde047}
+  .t-graf{background:#4a1030;color:#fb7185}
+  .t-web{background:#123047;color:#7dd3fc}
+  .t-docker{background:#274a5c;color:#38bdf8}
+  .t-kernel{background:#462005;color:#fb923c}
+  .t-asm{background:#3a3a3a;color:#d1d5db}
+  .t-prof{background:#1c3a26;color:#86efac}
+  .t-vm{background:#3d1f1f;color:#fca5a5}
+  .t-sec{background:#404012;color:#facc15}
+  .t-ia{background:#351a3d;color:#d8b4fe}
+  .t-chal{background:#1f2a33;color:#94a3b8}
+  .t-ruby{background:#4a1218;color:#fda4af}
+  .t-chain{background:#1f2f4a;color:#93b4ff}
+  .t-obj{background:#20313d;color:#93c5fd}
+  .lvl{font-size:.85rem;white-space:nowrap}
+  .fait{display:inline-block;margin-left:6px;font-size:.72rem;color:var(--orange);border:1px solid rgba(242,143,78,.4);border-radius:10px;padding:1px 7px;vertical-align:middle}
+  .st{display:inline-block;padding:3px 12px;border-radius:20px;font-size:.78rem;font-weight:700;white-space:nowrap;cursor:pointer;user-select:none;border:1px solid transparent;transition:.15s}
+  .st:hover{transform:scale(1.08)}
+  .stsel{background:rgba(125,147,162,.08);border:1px solid var(--border);color:var(--text);padding:4px 8px;border-radius:8px;font-size:.78rem;font-weight:600;cursor:pointer;outline:none}
+  .stsel:focus{border-color:var(--teal)}
+  .stsel.st-ok{color:var(--green);border-color:rgba(61,220,132,.35)}
+  .stsel.st-doing{color:var(--yellow);border-color:rgba(242,193,78,.35)}
+  .stsel.st-pend{color:var(--muted)}
+  .st-ok{background:rgba(61,220,132,.15);color:var(--green);border-color:rgba(61,220,132,.35)}
+  .st-doing{background:rgba(242,193,78,.15);color:var(--yellow);border-color:rgba(242,193,78,.35)}
+  .st-pend{background:rgba(125,147,162,.12);color:var(--muted);border-color:var(--border)}
+  .meta{color:var(--muted);font-size:.8rem;white-space:nowrap}
+  footer{margin-top:22px;color:var(--muted);font-size:.8rem;text-align:center}
+  footer code{color:var(--teal)}
+  #empty{display:none;color:var(--muted);text-align:center;padding:30px 0}
+  @media(max-width:720px){.hide-s{display:none}table{font-size:.8rem}th,td{padding:8px 6px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>🚀 Ruta <span>42</span> + 🎓 Oposición TAI</h1>
+    <p class="sub">Solo <b>outer core</b>, ordenado en <b>bloques de aprendizaje</b> a partir de lo que ya tienes hecho. Sin proyectos del common core (antiguo ni nuevo 2026).</p>
+  </header>
+
+  <div class="why">
+    <b>🧠 Cómo está ordenada esta ruta (solo outer core):</b>
+    <ol>
+      <li><b>Quitado</b>: common core antiguo (pipex, so_long, fract-ol, miniRT, ft_irc), common core nuevo 2026 (Python Modules, A-Maze-ing, Codexion, Call Me Maybe, Fly-in, RAG, Pac-Man, The Answer Protocol, tree_nity, Agent Smith, ft_resume) y lo que no es proyecto técnico.</li>
+      <li><b>B1–B5</b>, en orden: sistemas en C, redes, cripto y retos de seguridad, algoritmos y mates, Python/IA.</li>
+      <li><b>B6–B9</b>: hacking y binarios, procesos y shells, DevOps, kernel.</li>
+      <li><b>B10–B14</b>, según tu interés: lenguajes y VMs, web y móvil, gráficos, blockchain, compiladores.</li>
+      <li><b>B15</b>: proyectos sin información fiable (lee el subject antes). <b>B16</b>: Open Project.</li>
+    </ol>
+    <p class="legend">Nivel: 🟢 ≤ ~50 h · 🟡 ~51–150 h · 🔴 ~151–300 h · ☠️ +300 h · <span class="fait">🎯 TAI</span> = alto valor para la oposición</p>
+  </div>
+
+  <div class="stats">
+    <div class="stat s-done"><b id="c-done">—</b><small>✓ Hechos</small></div>
+    <div class="stat s-doing"><b id="c-doing">—</b><small>En proceso</small></div>
+    <div class="stat s-pend"><b id="c-pend">—</b><small>Pendientes</small></div>
+    <div class="stat"><b id="c-total">—</b><small>Total</small></div>
+  </div>
+  <div class="bar"><i id="bar-fill" style="width:0%"></i></div>
+  <p class="pctl" id="pct-text"></p>
+
+  <div class="tools">
+    <input type="text" id="search" placeholder="Buscar proyecto… (ej: kfs, ping, ssl, TAI)">
+    <button class="btn filter active" data-f="all">Todos</button>
+    <button class="btn filter" data-f="ok">Hechos</button>
+    <button class="btn filter" data-f="pend">Restantes</button>
+    <button class="btn filter" data-f="tai">🎯 TAI</button>
+    <button class="btn" id="reset">Reset</button>
+  </div>
+
+  <table id="route">
+    <thead><tr>
+      <th>#</th><th>Proyecto</th><th>Rama</th><th class="hide-s">Qué es / qué aprendés</th>
+      <th class="hide-s">Nivel</th><th class="hide-s">Horas</th><th class="hide-s">XP</th><th class="hide-s">Bloque</th><th>Estado (click)</th>
+    </tr></thead>
+    <tbody id="tbody"></tbody>
+  </table>
+
+  <div id="empty">No hay proyectos que coincidan con la búsqueda 🤷</div>
+
+  <footer>Actualizado el 30/10/2026 · <code>proyectos.txt</code> + guías de la comunidad 42 · Orden afinado para la oposición de TAI · Tu progreso se guarda en este navegador.</footer>
+</div>
+
+<script>
+const PHASES = { done:'✅ HECHOS', doing:'⏳ EN PROCESO' };
+// t:1 = alto valor para la oposición de TAI · lvl: 1🟢 2🟡 3🔴 4☠️
+const LV = {1:'🟢',2:'🟡',3:'🔴',4:'☠️'};
+const P = [
+ {"n":"Libft","p":"done","r":"t-nucleo","rt":"Núcleo","d":"Primera librería en C","h":"~70 h","x":"125","lvl":2,"s":"ok"},
+ {"n":"ft_printf","p":"done","r":"t-nucleo","rt":"Núcleo","d":"printf propio: variádicas, flags","h":"~55 h","x":"100","lvl":1,"s":"ok"},
+ {"n":"get_next_line","p":"done","r":"t-nucleo","rt":"Núcleo","d":"Leer un fd línea a línea","h":"~55 h","x":"112","lvl":1,"s":"ok"},
+ {"n":"Born2beroot","p":"done","r":"t-prof","rt":"SysAdmin","t":1,"d":"Servidor Debian a mano: hardening","h":"~50 h","x":"100","lvl":1,"s":"ok"},
+ {"n":"CPP Modules 00–09","p":"done","r":"t-cpp","rt":"C++","d":"OOP completa","h":"~150 h","x":"—","lvl":2,"s":"ok"},
+ {"n":"push_swap","p":"done","r":"t-cpp","rt":"Algoritmos","d":"Ordenar stacks al mínimo","h":"~50 h","x":"100","lvl":2,"s":"ok"},
+ {"n":"FdF","p":"done","r":"t-graf","rt":"Gráficos","d":"Wireframe 3D con minilibX","h":"~60 h","x":"100","lvl":2,"s":"ok"},
+ {"n":"minitalk","p":"done","r":"t-unix","rt":"Unix","d":"IPC por señales","h":"~50 h","x":"125","lvl":1,"s":"ok"},
+ {"n":"NetPractice","p":"done","r":"t-red","rt":"Red","t":1,"d":"TCP/IP, subnetting, routing","h":"~50 h","x":"100","lvl":1,"s":"ok"},
+ {"n":"Philosophers","p":"done","r":"t-unix","rt":"Unix","d":"Hilos y mutex","h":"~70 h","x":"100","lvl":2,"s":"ok"},
+ {"n":"minishell","p":"done","r":"t-unix","rt":"Unix","d":"Shell propia completa","h":"~210 h","x":"101","lvl":3,"s":"ok"},
+ {"n":"cub3d","p":"done","r":"t-graf","rt":"Gráficos","d":"Raycasting estilo Wolfenstein","h":"~280 h","x":"105","lvl":3,"s":"ok"},
+ {"n":"webserv","p":"done","r":"t-web","rt":"Web","d":"Servidor HTTP/1.1 en C++98","h":"~175 h","x":"—","lvl":3,"s":"ok"},
+ {"n":"ft_transcendence","p":"done","r":"t-web","rt":"Web","d":"Pong online full-stack","h":"~245 h","x":"125","lvl":3,"s":"ok"},
+ {"n":"Inception","p":"done","r":"t-docker","rt":"DevOps","t":1,"d":"Docker: nginx+wp+mariadb+TLS","h":"~150 h","x":"100","lvl":2,"s":"ok"},
+ {"n":"Exam Ranks 02–06","p":"done","r":"t-prof","rt":"Exámenes","d":"Los 5 exámenes del core","h":"—","x":"—","lvl":2,"s":"ok"},
+ {"n":"Work Experience I","p":"done","r":"t-prof","rt":"Profesional","d":"Primeras prácticas","h":"4 meses","x":"125","lvl":1,"s":"ok"},
+ {"n":"C Piscine (núcleo)","p":"done","r":"t-nucleo","rt":"Piscine","d":"Shell/C00-06/BSQ/Rushes/Exams","h":"—","x":"—","lvl":1,"s":"ok"},
+ {"n":"ft_ls","p":"doing","r":"t-unix","rt":"Unix","d":"Re-implementar ls: dirent, flags","h":"~49 h","x":"4200","lvl":1,"s":"doing"},
+ {"n":"ft_select","p":1,"r":"t-unix","rt":"Unix","d":"UI interactiva con termcaps","h":"~50 h","x":"4200","lvl":1,"s":"pend"},
+ {"n":"libasm","p":1,"r":"t-asm","rt":"ASM","d":"Rutinas x86-64 en NASM","h":"~20 h","x":"966","lvl":1,"s":"pend"},
+ {"n":"malloc","p":1,"r":"t-unix","rt":"Unix","d":"Gestor de memoria dinámica","h":"~49 h","x":"9450","lvl":1,"s":"pend"},
+ {"n":"ft_script","p":1,"r":"t-unix","rt":"Unix","d":"Re-implementar comando script: pty","h":"2 d","x":"4200","lvl":1,"s":"pend"},
+ {"n":"matt-daemon","p":1,"r":"t-unix","rt":"Daemon","t":1,"d":"Daemon C++ con socket, log y lock","h":"~49 h","x":"9450","lvl":1,"s":"pend"},
+ {"n":"ft_ping","p":2,"r":"t-red","rt":"Red","t":1,"d":"Ping propio: raw sockets, ICMP","h":"~49 h","x":"4200","lvl":1,"s":"pend"},
+ {"n":"ft_traceroute","p":2,"r":"t-red","rt":"Red","t":1,"d":"TTL, hops, routing, UDP","h":"~49 h","x":"4200","lvl":1,"s":"pend"},
+ {"n":"ft_malcolm","p":2,"r":"t-sec","rt":"Red","t":1,"d":"Man-in-the-middle ARP","h":"~49 h","x":"6000","lvl":1,"s":"pend"},
+ {"n":"ft_nmap","p":2,"r":"t-red","rt":"Red","t":1,"d":"Escáner TCP/UDP con libpcap","h":"~49 h","x":"15750","lvl":1,"s":"pend"},
+ {"n":"ft_ssl (md5/sha256/des/rsa)","p":3,"r":"t-sec","rt":"Cripto","t":1,"d":"Re-implementar OpenSSL: md5/sha256 → des → rsa","h":"49 h c/u","x":"9450 c/u","lvl":1,"s":"pend"},
+ {"n":"Cybersecurity (piscine)","p":3,"r":"t-sec","rt":"Piscine","d":"Pool de seguridad completa","h":"~63 h","x":"0","lvl":2,"s":"pend"},
+ {"n":"Cybersecurity challenges (Stockholm, Inquisitor, Reverse me, ft_onion, ft_otp, arachnida, Vaccine, Iron Dome)","p":3,"r":"t-sec","rt":"Malware/Web","t":1,"d":"Retos de ~7 h, en este orden: arachnida → ft_onion → ft_otp → Vaccine → Inquisitor → Stockholm → Iron Dome → Reverse Me","h":"7 h c/u","x":"1350 c/u","lvl":1,"s":"pend"},
+ {"n":"computorv1","p":4,"r":"t-nucleo","rt":"Algoritmos","d":"Ecuaciones de 2° grado paso a paso","h":"~49 h","x":"4200","lvl":1,"s":"pend"},
+ {"n":"ready set boole","p":4,"r":"t-ia","rt":"Lógica","d":"Álgebra booleana: normal forms","h":"~110 h","x":"7000","lvl":2,"s":"pend"},
+ {"n":"matrix","p":4,"r":"t-ia","rt":"IA","d":"Cálculo matricial y linalg","h":"~110 h","x":"7000","lvl":2,"s":"pend"},
+ {"n":"computorv2","p":4,"r":"t-nucleo","rt":"Algoritmos","d":"Calculadora de polinomios/matrices","h":"~147 h","x":"9450","lvl":2,"s":"pend"},
+ {"n":"lem_in","p":4,"r":"t-nucleo","rt":"Algoritmos","d":"Flujo máximo sobre grafos","h":"~98 h","x":"9450","lvl":2,"s":"pend"},
+ {"n":"n-puzzle","p":4,"r":"t-nucleo","rt":"Algoritmos","d":"Puzzle con A* y heurísticas","h":"~98 h","x":"9450","lvl":2,"s":"pend"},
+ {"n":"krpsim","p":4,"r":"t-nucleo","rt":"Algoritmos","d":"Planificador de recursos","h":"~49 h","x":"9450","lvl":2,"s":"pend"},
+ {"n":"expert-system","p":4,"r":"t-ia","rt":"IA/Lógica","d":"Motor de inferencia proposicional","h":"~98 h","x":"9450","lvl":2,"s":"pend"},
+ {"n":"rubik","p":4,"r":"t-nucleo","rt":"Algoritmos","d":"Resolver el cubo de rubik","h":"~98 h","x":"9450","lvl":2,"s":"pend"},
+ {"n":"Python for Data Science","p":5,"r":"t-ia","rt":"Data","d":"Datasets y dataframes (pandas)","h":"~35 h","x":"0","lvl":1,"s":"pend"},
+ {"n":"Piscine Data Science + DS 0–4","p":5,"r":"t-ia","rt":"Data","d":"Serie de data science","h":"~35 h + 5×7 h","x":"0","lvl":2,"s":"pend"},
+ {"n":"ft_linear_regression","p":5,"r":"t-ia","rt":"IA","d":"Regresión lineal por gradiente","h":"~70 h","x":"4200","lvl":2,"s":"pend"},
+ {"n":"dslr","p":5,"r":"t-ia","rt":"IA","d":"Clasificadores de ML","h":"~98 h","x":"6000","lvl":2,"s":"pend"},
+ {"n":"multilayer-perceptron","p":5,"r":"t-ia","rt":"IA","d":"MLP con backpropagation","h":"~98 h","x":"9450","lvl":2,"s":"pend"},
+ {"n":"Learn2Slither","p":5,"r":"t-ia","rt":"IA","d":"RL: snake con Q-learning","h":"~98 h","x":"9450","lvl":2,"s":"pend"},
+ {"n":"total-perspective-vortex","p":5,"r":"t-ia","rt":"IA","d":"Interfaz cerebro-ordenador: datos EEG + machine learning","h":"~98 h","x":"9450","lvl":2,"s":"pend"},
+ {"n":"Piscine Deep Learning + DL 0–4","p":5,"r":"t-ia","rt":"IA","d":"Serie deep learning","h":"~35 h + 5×7 h","x":"0","lvl":2,"s":"pend"},
+ {"n":"ft_kalman","p":5,"r":"t-ia","rt":"IA","d":"Filtros de Kalman para tracking","h":"~210 h","x":"16800","lvl":3,"s":"pend"},
+ {"n":"snow-crash","p":6,"r":"t-sec","rt":"CTF","t":1,"d":"CTF introductorio sobre VM","h":"~147 h","x":"9450","lvl":2,"s":"pend"},
+ {"n":"darkly","p":6,"r":"t-sec","rt":"Web","t":1,"d":"Web con vulnerabilidades OWASP","h":"~98 h","x":"6300","lvl":2,"s":"pend"},
+ {"n":"boot2root","p":6,"r":"t-sec","rt":"Hacking","t":1,"d":"Atacar VM hasta ser root","h":"~49 h","x":"11500","lvl":1,"s":"pend"},
+ {"n":"strace","p":6,"r":"t-unix","rt":"Sistemas","d":"Syscalls con ptrace","h":"~49 h","x":"9450","lvl":1,"s":"pend"},
+ {"n":"nm","p":6,"r":"t-asm","rt":"Binarios","d":"Re-implementar nm: ELF/símbolos","h":"~14 d","x":"9450","lvl":3,"s":"pend"},
+ {"n":"dr-quine","p":6,"r":"t-sec","rt":"Quine","d":"Quine 3 niveles: shellcode/infección","h":"~14 h","x":"2520","lvl":1,"s":"pend"},
+ {"n":"woody-woodpacker","p":6,"r":"t-sec","rt":"Packer","d":"Packer de ELF con cifrado","h":"~49 h","x":"9450","lvl":1,"s":"pend"},
+ {"n":"rainfall","p":6,"r":"t-sec","rt":"Exploit","d":"Explotación de binarios (32 niveles)","h":"~28 d","x":"25200","lvl":3,"s":"pend"},
+ {"n":"override","p":6,"r":"t-sec","rt":"Exploit","d":"Retos avanzados de explotación","h":"~196 h","x":"35700","lvl":3,"s":"pend"},
+ {"n":"famine","p":6,"r":"t-sec","rt":"Virus","d":"Virus que infecta archivos","h":"~98 h","x":"9450","lvl":2,"s":"pend"},
+ {"n":"ft_shield","p":6,"r":"t-sec","rt":"SysAdmin","d":"Anti-malware / endurance post-B2R","h":"~196 h","x":"15750","lvl":3,"s":"pend"},
+ {"n":"pestilence","p":6,"r":"t-sec","rt":"Virus","d":"Virus avanzado (saga nivel 2)","h":"~196 h","x":"15750","lvl":3,"s":"pend"},
+ {"n":"war","p":6,"r":"t-sec","rt":"Virus","d":"Saga de virus nivel 3","h":"~196 h","x":"35700","lvl":3,"s":"pend"},
+ {"n":"death","p":6,"r":"t-sec","rt":"Virus","d":"Saga final","h":"~147 h","x":"35700","lvl":3,"s":"pend"},
+ {"n":"tinky-winkey","p":6,"r":"t-sec","rt":"Hacking","d":"Reto avanzado de hacking","h":"~210 h","x":"16800","lvl":3,"s":"pend"},
+ {"n":"lem-ipc","p":7,"r":"t-unix","rt":"IPC","d":"Batalla entre procesos: semaf., shm, colas","h":"~98 h","x":"9450","lvl":2,"s":"pend"},
+ {"n":"taskmaster","p":7,"r":"t-unix","rt":"Unix","t":1,"d":"Supervisor de servicios tipo supervisord","h":"~98 h","x":"9450","lvl":2,"s":"pend"},
+ {"n":"42sh","p":7,"r":"t-unix","rt":"Unix","t":1,"d":"Shell avanzada: job control, scripting","h":"~294 h","x":"15750","lvl":3,"s":"pend"},
+ {"n":"zappy","p":7,"r":"t-unix","rt":"Distribuido","d":"Juego cliente/servidor + IA","h":"~294 h","x":"25200","lvl":3,"s":"pend"},
+ {"n":"cloud-1","p":8,"r":"t-docker","rt":"DevOps","t":1,"d":"Infraestructura en la nube","h":"~100 h","x":"9450","lvl":2,"s":"pend"},
+ {"n":"Inception-of-Things","p":8,"r":"t-docker","rt":"DevOps","t":1,"d":"k3s/k3d/k3v: virtualización y k8s","h":"~200 h","x":"25450","lvl":3,"s":"pend"},
+ {"n":"Bgp At Doors of Autonomous Systems is Simple","p":8,"r":"t-red","rt":"Red","t":1,"d":"BGP: routing entre sistemas autónomos","h":"~200 h","x":"22450","lvl":3,"s":"pend"},
+ {"n":"ft_linux","p":9,"r":"t-kernel","rt":"Kernel","t":1,"d":"Distro propia (LFS): SO de pies a cabeza","h":"~49 h","x":"4200","lvl":1,"s":"pend"},
+ {"n":"little-penguin-1","p":9,"r":"t-kernel","rt":"Kernel","t":1,"d":"Módulos, syscalls,drivers básicos","h":"~100 h","x":"9450","lvl":2,"s":"pend"},
+ {"n":"process-and-memory","p":9,"r":"t-kernel","rt":"Kernel","t":1,"d":"Syscalls y memoria usuario/kernel","h":"~98 h","x":"9450","lvl":2,"s":"pend"},
+ {"n":"drivers-and-interrupts","p":9,"r":"t-kernel","rt":"Kernel","t":1,"d":"Drivers e IRQ","h":"~98 h","x":"15750","lvl":2,"s":"pend"},
+ {"n":"filesystem","p":9,"r":"t-kernel","rt":"Kernel","d":"Filesystem propio: superblock, inodes","h":"~196 h","x":"15750","lvl":3,"s":"pend"},
+ {"n":"userspace_digressions","p":9,"r":"t-kernel","rt":"Kernel","t":1,"d":"Systemd, runlevels, init propio","h":"~294 h","x":"16800","lvl":3,"s":"pend"},
+ {"n":"kfs-1","p":9,"r":"t-kernel","rt":"KFS","d":"Kernel bootable con GRUB: multiboot, VGA","h":"294 h","x":"15750","lvl":3,"s":"pend"},
+ {"n":"kfs-2","p":9,"r":"t-kernel","rt":"KFS","d":"GDT y stack del kernel","h":"—","x":"15750","lvl":3,"s":"pend"},
+ {"n":"kfs-3","p":9,"r":"t-kernel","rt":"KFS","d":"Paging, memoria física y virtual, panic","h":"294 h","x":"35700","lvl":3,"s":"pend"},
+ {"n":"kfs-4","p":9,"r":"t-kernel","rt":"KFS","d":"Interrupciones (HW/SW) y IDT","h":"196 h","x":"25200","lvl":3,"s":"pend"},
+ {"n":"kfs-5","p":9,"r":"t-kernel","rt":"KFS","d":"Procesos, multitarea, señales","h":"392 h","x":"35700","lvl":4,"s":"pend"},
+ {"n":"kfs-6","p":9,"r":"t-kernel","rt":"KFS","d":"IDE + ext2: /sys /var /dev /proc","h":"294 h","x":"25200","lvl":3,"s":"pend"},
+ {"n":"kfs-7","p":9,"r":"t-kernel","rt":"KFS","d":"Syscalls, entorno unix, sockets IPC","h":"630 h","x":"35700","lvl":4,"s":"pend"},
+ {"n":"kfs-8","p":9,"r":"t-kernel","rt":"KFS","d":"Módulos del kernel: carga, callbacks, ring","h":"196 h","x":"15750","lvl":3,"s":"pend"},
+ {"n":"kfs-9","p":9,"r":"t-kernel","rt":"KFS","d":"ELF completo: ejecutar binarios desde el kernel","h":"245 h","x":"15750","lvl":3,"s":"pend"},
+ {"n":"kfs-x","p":9,"r":"t-kernel","rt":"KFS","d":"Kernel completo: libc, shell POSIX, unix","h":"56 h","x":"35700","lvl":4,"s":"pend"},
+ {"n":"Piscine Object (Modules 00–05)","p":10,"r":"t-obj","rt":"OOP","t":1,"d":"Encapsulación, UML, SOLID, patterns","h":"~64 h","x":"0","lvl":2,"s":"pend"},
+ {"n":"libftpp","p":10,"r":"t-cpp","rt":"C++","d":"Librería de templates C++","h":"~98 h","x":"5880","lvl":2,"s":"pend"},
+ {"n":"abstract-vm","p":10,"r":"t-vm","rt":"VM","d":"VM de pila con operandos tipados (C++)","h":"~21 d","x":"9450","lvl":2,"s":"pend"},
+ {"n":"corewar","p":10,"r":"t-vm","rt":"VM","d":"Máquina virtual de battle programs","h":"~196 h","x":"17500","lvl":3,"s":"pend"},
+ {"n":"Piscine OCaml + OCAML 0–3","p":10,"r":"t-obj","rt":"OCaml","d":"Serie OCaml: recursión, mónadas","h":"~63 h + módulos","x":"0","lvl":2,"s":"pend"},
+ {"n":"h42n42","p":10,"r":"t-obj","rt":"OCaml","d":"Juego web en OCaml con Eliom (simulación de virus). Requiere Piscine OCaml","h":"~98 h","x":"9450","lvl":2,"s":"pend"},
+ {"n":"ft_turing","p":10,"r":"t-ia","rt":"Computabilidad","d":"Simulador de Máquina de Turing","h":"~98 h","x":"9450","lvl":2,"s":"pend"},
+ {"n":"ft_kleene","p":10,"r":"t-ia","rt":"Teoría","d":"Sin verificar: por el nombre, autómatas y regex","h":"~140 h","x":"0","lvl":2,"s":"pend"},
+ {"n":"swingy","p":10,"r":"t-obj","rt":"Java","d":"RPG en Java (MVC, consola y GUI Swing)","h":"~98 h","x":"9450","lvl":2,"s":"pend"},
+ {"n":"fix-me","p":10,"r":"t-obj","rt":"Java","d":"Simulación de bolsa en Java (protocolo FIX)","h":"~196 h","x":"15750","lvl":3,"s":"pend"},
+ {"n":"GBmu","p":10,"r":"t-vm","rt":"Emulación","d":"Emulador Game Boy en Rust","h":"~150 h","x":"—","lvl":2,"s":"pend"},
+ {"n":"Piscine Django + Django 0–3","p":11,"r":"t-obj","rt":"Django","t":1,"d":"Web + BBDD + ORM (tema de la oposición)","h":"~63 h + 4×7 h","x":"0","lvl":2,"s":"pend"},
+ {"n":"camagru","p":11,"r":"t-web","rt":"Web","d":"App PHP+JS: galería de fotos","h":"~49 h","x":"4200","lvl":1,"s":"pend"},
+ {"n":"matcha","p":11,"r":"t-web","rt":"Web","d":"App de citas con websocket","h":"~98 h","x":"9450","lvl":2,"s":"pend"},
+ {"n":"red-tetris","p":11,"r":"t-web","rt":"Web","d":"Tetris multiusuario websocket","h":"~147 h","x":"15750","lvl":3,"s":"pend"},
+ {"n":"hypertube","p":11,"r":"t-web","rt":"Web","d":"Streaming por torrent","h":"~196 h","x":"15750","lvl":3,"s":"pend"},
+ {"n":"music-room","p":11,"r":"t-web","rt":"Web","d":"Plataforma de música/streaming","h":"~196 h","x":"25200","lvl":3,"s":"pend"},
+ {"n":"ft_hangouts","p":11,"r":"t-web","rt":"Web","d":"App con chat y mapa de usuarios","h":"~49 h","x":"4200","lvl":1,"s":"pend"},
+ {"n":"swifty-companion","p":11,"r":"t-web","rt":"Móvil","d":"App nativa de la intranet 42","h":"~49 h","x":"4200","lvl":1,"s":"pend"},
+ {"n":"Mobile 0–5","p":11,"r":"t-web","rt":"Móvil","d":"Serie de apps móviles: API, auth","h":"6×~7 h","x":"0","lvl":1,"s":"pend"},
+ {"n":"swifty-proteins","p":11,"r":"t-web","rt":"Móvil","d":"App de proteínas 3D (PDB)","h":"~147 h","x":"15750","lvl":2,"s":"pend"},
+ {"n":"Peace_Break","p":11,"r":"t-web","rt":"Móvil","d":"Juego de ladrillos para Android: tienda de skins y ranking online","h":"~150 h","x":"9000","lvl":2,"s":"pend"},
+ {"n":"Piscine Symfony + Symfony 0–3","p":11,"r":"t-web","rt":"PHP","d":"Serie PHP/Symfony completa","h":"~63 h + 4×7 h","x":"0","lvl":2,"s":"pend"},
+ {"n":"Piscine RoR + RoR 0–3","p":11,"r":"t-ruby","rt":"Ruby","d":"Serie Ruby on Rails completa","h":"~63 h + 4×7 h","x":"0","lvl":2,"s":"pend"},
+ {"n":"scop","p":12,"r":"t-graf","rt":"Gráficos","d":"Render 3D de modelos .obj","h":"~49 h","x":"9450","lvl":1,"s":"pend"},
+ {"n":"humangl","p":12,"r":"t-graf","rt":"Gráficos","d":"Modelo humano 3D en OpenGL","h":"~49 h","x":"4200","lvl":1,"s":"pend"},
+ {"n":"mod1","p":12,"r":"t-graf","rt":"Gráficos","d":"Simulación de agua sobre terreno","h":"~98 h","x":"9450","lvl":2,"s":"pend"},
+ {"n":"nibbler","p":12,"r":"t-graf","rt":"Gráficos","d":"Snake con libs intercambiables (dlopen)","h":"~98 h","x":"9450","lvl":2,"s":"pend"},
+ {"n":"ft_vox","p":12,"r":"t-graf","rt":"Gráficos","d":"Voxel engine en tiempo real","h":"~147 h","x":"15750","lvl":2,"s":"pend"},
+ {"n":"particle-system","p":12,"r":"t-graf","rt":"Gráficos","d":"Partículas masivas con GPU","h":"~147 h","x":"15750","lvl":2,"s":"pend"},
+ {"n":"shaderpixel","p":12,"r":"t-graf","rt":"Gráficos","d":"Demos estilo Shadertoy","h":"~147 h","x":"15750","lvl":2,"s":"pend"},
+ {"n":"guimp","p":12,"r":"t-graf","rt":"Gráficos","d":"Editor pixel-art tipo Photoshop","h":"~147 h","x":"12600","lvl":2,"s":"pend"},
+ {"n":"42run","p":12,"r":"t-graf","rt":"Gráficos","d":"Runner 3D endless (rama gráfica)","h":"~98 h","x":"9450","lvl":2,"s":"pend"},
+ {"n":"in-the-shadows","p":12,"r":"t-graf","rt":"Gráficos","d":"Rama gráfica: sombras e iluminación (sin verificar)","h":"~147 h","x":"9450","lvl":2,"s":"pend"},
+ {"n":"rt","p":12,"r":"t-graf","rt":"Render","d":"Raytracing avanzado en tiempo real","h":"~294 h","x":"20750","lvl":3,"s":"pend"},
+ {"n":"doom-nukem","p":12,"r":"t-graf","rt":"Gráficos","d":"Doom-like con portal rendering","h":"~294 h","x":"15750","lvl":3,"s":"pend"},
+ {"n":"Unity 0–6","p":12,"r":"t-graf","rt":"Unity","d":"Serie Unity: física 3D, GUI, anims","h":"7×~7 h","x":"0","lvl":2,"s":"pend"},
+ {"n":"xv","p":12,"r":"t-unix","rt":"Editor","d":"Editor de imágenes xv","h":"~392 h","x":"22000","lvl":4,"s":"pend"},
+ {"n":"ft_minecraft","p":12,"r":"t-graf","rt":"Gráficos","d":"Minecraft multiusuario voxel","h":"~560 h","x":"20750","lvl":4,"s":"pend"},
+ {"n":"Very_Real_Engine","p":12,"r":"t-graf","rt":"Gráficos","d":"Game engine 3D desde cero","h":"~600 h","x":"30000","lvl":4,"s":"pend"},
+ {"n":"Tokenizer","p":13,"r":"t-chain","rt":"Blockchain","d":"Token ERC-20 en Ethereum (rama blockchain)","h":"~98 h","x":"9450","lvl":2,"s":"pend"},
+ {"n":"TokenizeArt","p":13,"r":"t-chain","rt":"Blockchain","d":"NFT con imagen y metadatos en IPFS","h":"~98 h","x":"9450","lvl":2,"s":"pend"},
+ {"n":"TokenZwap","p":13,"r":"t-chain","rt":"Blockchain","d":"Exchange descentralizado (AMM) + marketplace de NFT","h":"~150 h","x":"9000","lvl":2,"s":"pend"},
+ {"n":"ft_lex","p":14,"r":"t-unix","rt":"Compiladores","d":"Nuevo (sep 2026): por el nombre, reimplementar lex","h":"~250 h","x":"15000","lvl":3,"s":"pend"},
+ {"n":"ft_yacc","p":14,"r":"t-unix","rt":"Compiladores","d":"Nuevo (sep 2026): por el nombre, reimplementar yacc","h":"~300 h","x":"20000","lvl":4,"s":"pend"},
+ {"n":"cc1","p":14,"r":"t-unix","rt":"Compiladores","d":"Compilador C desde cero","h":"~300 h","x":"50000","lvl":4,"s":"pend"},
+ {"n":"Ecomesh","p":15,"r":"t-chal","rt":"Sin verificar","d":"Nuevo (sep 2026): sin información pública fiable; lee el subject en la intra","h":"~200 h","x":"0","lvl":3,"s":"pend"},
+ {"n":"BrickDepth","p":15,"r":"t-chal","rt":"Sin verificar","d":"Nuevo (sep 2026): sin información pública fiable; lee el subject en la intra","h":"~48 h","x":"0","lvl":1,"s":"pend"},
+ {"n":"ChromaCraft","p":15,"r":"t-chal","rt":"Sin verificar","d":"Nuevo (sep 2026): sin información pública fiable; lee el subject en la intra","h":"~48 h","x":"0","lvl":1,"s":"pend"},
+ {"n":"CVForge","p":15,"r":"t-chal","rt":"Sin verificar","d":"Nuevo (sep 2026): sin información pública fiable; lee el subject en la intra","h":"~48 h","x":"0","lvl":1,"s":"pend"},
+ {"n":"FaceSwap42","p":15,"r":"t-chal","rt":"Sin verificar","d":"Nuevo (sep 2026): sin información pública fiable; lee el subject en la intra","h":"~48 h","x":"0","lvl":1,"s":"pend"},
+ {"n":"grAff-it","p":15,"r":"t-chal","rt":"Sin verificar","d":"Nuevo (sep 2026): sin información pública fiable; lee el subject en la intra","h":"~48 h","x":"0","lvl":1,"s":"pend"},
+ {"n":"GraphForge","p":15,"r":"t-chal","rt":"Sin verificar","d":"Nuevo (sep 2026): sin información pública fiable; lee el subject en la intra","h":"~48 h","x":"0","lvl":1,"s":"pend"},
+ {"n":"InterviewSim","p":15,"r":"t-chal","rt":"Sin verificar","d":"Nuevo (sep 2026): sin información pública fiable; lee el subject en la intra","h":"~48 h","x":"0","lvl":1,"s":"pend"},
+ {"n":"LeakLab","p":15,"r":"t-chal","rt":"Sin verificar","d":"Nuevo (sep 2026): sin información pública fiable; lee el subject en la intra","h":"~48 h","x":"0","lvl":1,"s":"pend"},
+ {"n":"PrompTrial","p":15,"r":"t-chal","rt":"Sin verificar","d":"Nuevo (sep 2026): sin información pública fiable; lee el subject en la intra","h":"~48 h","x":"0","lvl":1,"s":"pend"},
+ {"n":"SpinDetect","p":15,"r":"t-chal","rt":"Sin verificar","d":"Nuevo (sep 2026): sin información pública fiable; lee el subject en la intra","h":"~48 h","x":"0","lvl":1,"s":"pend"},
+ {"n":"Supercharge","p":15,"r":"t-chal","rt":"Sin verificar","d":"Nuevo (sep 2026): sin información pública fiable; lee el subject en la intra","h":"~140 h","x":"12600","lvl":2,"s":"pend"},
+ {"n":"ft_lgtm","p":15,"r":"t-chal","rt":"Sin verificar","d":"Nuevo (sep 2026): sin información pública fiable; lee el subject en la intra","h":"~180 h","x":"16200","lvl":3,"s":"pend"},
+ {"n":"Datomic","p":15,"r":"t-chal","rt":"Sin verificar","d":"Nuevo (sep 2026): sin información pública fiable; lee el subject en la intra","h":"~49 h","x":"0","lvl":1,"s":"pend"},
+ {"n":"RetroEmu","p":15,"r":"t-chal","rt":"Sin verificar","d":"Nuevo (sep 2026): sin información pública fiable; lee el subject en la intra","h":"~420 h","x":"37800","lvl":4,"s":"pend"},
+ {"n":"ActiveConnect","p":15,"r":"t-chal","rt":"Sin verificar","d":"Sin información fiable: lee el subject en la intra antes de empezar","h":"~140 h","x":"15750","lvl":2,"s":"pend"},
+ {"n":"ActiveDiscovery","p":15,"r":"t-chal","rt":"Sin verificar","d":"Sin información fiable: lee el subject en la intra antes de empezar","h":"~140 h","x":"15750","lvl":2,"s":"pend"},
+ {"n":"ActiveTechTales","p":15,"r":"t-chal","rt":"Sin verificar","d":"Sin información fiable: lee el subject en la intra antes de empezar","h":"~140 h","x":"15750","lvl":2,"s":"pend"},
+ {"n":"MicroForensX","p":15,"r":"t-chal","rt":"Sin verificar","t":1,"d":"Sin información fiable: lee el subject en la intra antes de empezar","h":"~49 h","x":"9450","lvl":2,"s":"pend"},
+ {"n":"UnleashTheBox","p":15,"r":"t-chal","rt":"Sin verificar","d":"Sin información fiable: lee el subject en la intra antes de empezar","h":"~147 h","x":"15750","lvl":3,"s":"pend"},
+ {"n":"Cow-Neck-TID","p":15,"r":"t-chal","rt":"Sin verificar","d":"Sin información fiable: lee el subject en la intra antes de empezar","h":"~300 h","x":"20000","lvl":4,"s":"pend"},
+ {"n":"Ftl_quantum","p":15,"r":"t-chal","rt":"Sin verificar","d":"Sin información fiable: lee el subject en la intra antes de empezar","h":"~98 h","x":"6500","lvl":2,"s":"pend"},
+ {"n":"ft_newton","p":15,"r":"t-chal","rt":"Sin verificar","d":"Sin verificar: otras fuentes lo sitúan en gráficos (motor de física)","h":"~98 h","x":"24360","lvl":2,"s":"pend"},
+ {"n":"freddie-mercury","p":15,"r":"t-chal","rt":"Sin verificar","d":"Sin información fiable: lee el subject en la intra antes de empezar","h":"~14 d","x":"12600","lvl":4,"s":"pend"},
+ {"n":"B","p":15,"r":"t-chal","rt":"Sin verificar","d":"Sin información fiable: lee el subject en la intra antes de empezar","h":"~50 h","x":"9450","lvl":1,"s":"pend"},
+ {"n":"Electronique","p":15,"r":"t-chal","rt":"Sin verificar","d":"Sin información fiable: lee el subject en la intra antes de empezar","h":"150 d","x":"42000","lvl":3,"s":"pend"},
+ {"n":"Open Project","p":16,"r":"t-prof","rt":"Libre","d":"Proyecto libre largo","h":"180 d","x":"31500","lvl":2,"s":"pend"},
+];
+
+// ─── Estado + persistencia ───
+const LS_KEY = 'ruta42_v2';
+let saved = {};
+try { saved = JSON.parse(localStorage.getItem(LS_KEY) || '{}'); } catch(e){ saved = {}; }
+function statusFor(item){ return saved[item.n] || item.s; }
+const OPTS = { ok:'✓ Hecho', doing:'⏳ En proceso', pend:'⬜ Pendiente' };
+
+// ─── Render ───
+function statusSelect(name, cur){
+  let o = '';
+  for (const [k,v] of Object.entries(OPTS))
+    o += `<option value="${k}"${k===cur?' selected':''}>${v}</option>`;
+  return `<select class="stsel st-${cur}" data-n="${name.replace(/"/g,'&quot;')}">${o}</select>`;
+}
+function faseLabel(p){
+  if (p==='done' || p==='doing') return '—';
+  return 'B'+p;
+}
+function taiBadge(t){ return t ? '<span class="fait" title="Alto valor para la oposición de TAI">🎯 TAI</span>' : ''; }
+function render(){
+  const raw = document.getElementById('search').value.toLowerCase();
+  const wantsTai = /tai|🎯/.test(raw);
+  const q = raw.replace(/tai|🎯/g,'').trim();
+  const f = currentFilter;
+  let html = '', vis=0, num=0, done=0, doing=0, pend=0;
+  const all = P.map(x=>({...x, s2: statusFor(x)})).filter(it=>{
+    const matchTxt = (it.n.toLowerCase().includes(q) || it.d.toLowerCase().includes(q));
+    const matchTai = !wantsTai || !!it.t;
+    const matchF = f==='all' || (f==='ok' && (it.s2!=='pend')) || (f==='pend' && it.s2==='pend') || (f==='tai' && !!(it.t && it.s2!=='ok'));
+    return matchTxt && matchTai && matchF;
+  });
+  const groups = [
+    ['✅ HECHOS — common core ya superado', 'todo lo que ya cerraste', it=>it.s2==='ok'],
+    ['⏳ EN PROCESO', 'lo que estás haciendo ahora', it=>it.s2==='doing'],
+    ['⬜ PENDIENTES — orden de aprendizaje por bloques (B1 → B16)', 'dentro de cada bloque, cada proyecto prepara al siguiente · haz B1–B5 primero y luego alterna según interés', it=>it.s2==='pend']
+  ];
+  for (const [title, why, pred] of groups){
+    const items = all.filter(pred);
+    if (!items.length) continue;
+    html += `<tr class="section"><th colspan="9">${title}<small>${why}</small></th></tr>`;
+    for (const it of items){
+      num++;
+      if (it.s2==='ok') done++; else if (it.s2==='doing') doing++; else pend++;
+      vis++;
+      html += `<tr>
+        <td class="num">${num}</td>
+        <td class="name">${it.n}${taiBadge(it.t)}</td>
+        <td><span class="tag ${it.r}">${it.rt}</span></td>
+        <td class="hide-s">${it.d}</td>
+        <td class="lvl">${LV[it.lvl]||''}</td>
+        <td class="meta hide-s">${it.h}</td>
+        <td class="meta">${it.x}</td>
+        <td class="meta hide-s">${faseLabel(String(it.p))}</td>
+        <td>${statusSelect(it.n, it.s2)}</td>
+      </tr>`;
+    }
+  }
+  document.getElementById('tbody').innerHTML = html;
+  document.getElementById('empty').style.display = vis===0 ? '' : 'none';
+  const total = done+doing+pend;
+  document.getElementById('c-done').textContent = done;
+  document.getElementById('c-doing').textContent = doing;
+  document.getElementById('c-pend').textContent = pend;
+  document.getElementById('c-total').textContent = total;
+  const pct = total ? Math.round(done/total*100) : 0;
+  document.getElementById('bar-fill').style.width = pct+'%';
+  document.getElementById('pct-text').textContent = 'Progreso: '+pct+'%';
+}
+
+// cambio de estado con desplegable (delegación)
+document.getElementById('tbody').addEventListener('change', function(e){
+  const s = e.target.closest('.stsel');
+  if (!s) return;
+  const name = s.getAttribute('data-n');
+  const defaultS = (P.find(x=>x.n===name)||{}).s || 'pend';
+  const next = s.value;
+  if (next === defaultS) delete saved[name];
+  else saved[name] = next;
+  try { localStorage.setItem(LS_KEY, JSON.stringify(saved)); } catch(err){}
+  render();
+});
+
+// search + filter
+let currentFilter='all';
+document.getElementById('search').addEventListener('input', render);
+document.querySelectorAll('.btn.filter').forEach(b=>{
+  b.addEventListener('click', function(){
+    document.querySelectorAll('.btn.filter').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');
+    currentFilter = b.getAttribute('data-f');
+    render();
+  });
+});
+document.getElementById('reset').addEventListener('click', function(){
+  saved = {};
+  try { localStorage.removeItem(LS_KEY); } catch(e){}
+  render();
+});
+
+render();
+</script>
+</body>
+</html>
