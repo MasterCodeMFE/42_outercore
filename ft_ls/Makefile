@@ -1,22 +1,30 @@
-
 NAME = ft_ls
 
-OBJDIR = ./obj
-
-SRC = ./src/main.c
-
-OBJ = $(SRC:./src/%.c=$(OBJDIR)/%.o)
-
 CC = gcc
-CFLAGS = -Wall -Werror -Wextra
+CFLAGS = -Wall -Wextra -Werror
+
+SRCDIR = ./src
+OBJDIR = ./obj
+INCDIR = ./include
+
+SRC = $(SRCDIR)/main.c \
+	  $(SRCDIR)/add_entry.c \
+	  $(SRCDIR)/read_directory.c \
+	  $(SRCDIR)/join_path.c \
+	  $(SRCDIR)/sort_entries.c \
+	  $(SRCDIR)/parse_flags.c \
+	  $(SRCDIR)/process_paths.c
+
+
+OBJ = $(SRC:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 
 all: $(NAME)
 
 $(NAME): $(OBJ)
-	$(CC) $(CFLAGS) $(OBJ) -o $(NAME) $(LIBS)
+	$(CC) $(CFLAGS) $(OBJ) -o $(NAME)
 
-$(OBJDIR)/%.o: ./src/%.c | $(OBJDIR)
-	$(CC) $(CFLAGS) -c $< -o $@
+$(OBJDIR)/%.o: $(SRCDIR)/%.c $(INCDIR)/ft_ls.h | $(OBJDIR)
+	$(CC) $(CFLAGS) -I$(INCDIR) -c $< -o $@
 
 $(OBJDIR):
 	mkdir -p $(OBJDIR)
