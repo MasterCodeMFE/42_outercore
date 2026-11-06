@@ -35,14 +35,27 @@ int read_directory(char *directorio, t_ls_flags options)
     {
         if(add_entry(entrada, &lista, directorio) == 1)
         {
+			closedir(opendirectory);
+			free_entries(&lista);
             return (1);
         }
         entrada = readdir(opendirectory);
     }
-	if(options.r == 0)
-		sort_entries(&lista);
+	closedir(opendirectory);
+	if (options.t == 0)
+	{
+		if (options.r == 0)
+			sort_entries(&lista);
+		else
+			reverse_sort_entries(&lista);
+	}
 	else
-		reverse_sort_entries(&lista);
+	{
+		if (options.r == 0)
+			time_sort_entries(&lista);
+		else
+			reverse_time_sort_entries(&lista);
+	}
 	if(options.R == 1)
 	{
 		printf("%s:\n", directorio);
@@ -61,5 +74,6 @@ int read_directory(char *directorio, t_ls_flags options)
 			actual = actual->siguiente;
 		}
 	}
+	free_entries(&lista);
     return (0);
 }

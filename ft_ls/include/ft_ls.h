@@ -9,6 +9,7 @@
 # include <string.h>
 # include <stdlib.h>
 # include <unistd.h>
+# include <errno.h>
 
     typedef  struct  s_ls_entry
     {
@@ -40,5 +41,8 @@
     int	parse_flags(int argc, char **argv, t_ls_flags *flags);
     void reverse_sort_entries(t_ls_list *lista);
     int	process_paths(int argc, char **argv, t_ls_flags options);
+    void	free_entries(t_ls_list *lista);
+    void	time_sort_entries(t_ls_list *lista);
+    void	reverse_time_sort_entries(t_ls_list *lista);
     
 #endif

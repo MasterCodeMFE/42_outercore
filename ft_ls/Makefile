@@ -13,7 +13,8 @@ SRC = $(SRCDIR)/main.c \
 	  $(SRCDIR)/join_path.c \
 	  $(SRCDIR)/sort_entries.c \
 	  $(SRCDIR)/parse_flags.c \
-	  $(SRCDIR)/process_paths.c
+	  $(SRCDIR)/process_paths.c \
+	  $(SRCDIR)/free_entries.c
 
 
 OBJ = $(SRC:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
