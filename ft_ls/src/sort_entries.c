@@ -56,6 +56,19 @@ void	reverse_sort_entries(t_ls_list *lista)
     }
 }
 
+static int	compare_time(t_ls_entry *a, t_ls_entry *b)
+{
+	if (a->metadata.st_mtim.tv_sec > b->metadata.st_mtim.tv_sec)
+		return (-1);
+	if (a->metadata.st_mtim.tv_sec < b->metadata.st_mtim.tv_sec)
+		return (1);
+	if (a->metadata.st_mtim.tv_nsec > b->metadata.st_mtim.tv_nsec)
+		return (-1);
+	if (a->metadata.st_mtim.tv_nsec < b->metadata.st_mtim.tv_nsec)
+		return (1);
+	return (strcmp(a->nombre, b->nombre));
+}
+
 void	time_sort_entries(t_ls_list *lista)
 {
     char *nombre;
@@ -66,7 +79,7 @@ void	time_sort_entries(t_ls_list *lista)
     entry = lista->primero;
     while(entry != NULL)
     {
-        if (entry->siguiente != NULL && entry->metadata.st_mtime < entry->siguiente->metadata.st_mtime)
+        if (entry->siguiente != NULL && compare_time(entry, entry->siguiente) > 0)
         {
             nombre = entry->nombre;
             ruta = entry->ruta;
@@ -94,7 +107,7 @@ void	reverse_time_sort_entries(t_ls_list *lista)
     entry = lista->primero;
     while(entry != NULL)
     {
-        if (entry->siguiente != NULL && entry->metadata.st_mtime > entry->siguiente->metadata.st_mtime)
+        if (entry->siguiente != NULL && compare_time(entry, entry->siguiente) < 0)
         {
             nombre = entry->nombre;
             ruta = entry->ruta;

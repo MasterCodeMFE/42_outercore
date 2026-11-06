@@ -14,7 +14,17 @@ SRC = $(SRCDIR)/main.c \
 	  $(SRCDIR)/sort_entries.c \
 	  $(SRCDIR)/parse_flags.c \
 	  $(SRCDIR)/process_paths.c \
-	  $(SRCDIR)/free_entries.c
+	  $(SRCDIR)/free_entries.c \
+	  $(SRCDIR)/print_errors.c \
+	  $(SRCDIR)/add_error.c \
+	  $(SRCDIR)/free_errors.c \
+	  $(SRCDIR)/add_path.c \
+	  $(SRCDIR)/read_file.c \
+	  $(SRCDIR)/print_permissions.c \
+	  $(SRCDIR)/print_owner.c \
+	  $(SRCDIR)/print_group.c \
+	  $(SRCDIR)/print_date.c \
+	  $(SRCDIR)/get_size_width.c \
 
 
 OBJ = $(SRC:$(SRCDIR)/%.c=$(OBJDIR)/%.o)

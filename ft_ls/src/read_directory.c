@@ -2,12 +2,32 @@
 
 void	print_names(t_ls_entry *lista, t_ls_flags options)
 {
+	int	size_width;
+
+	size_width = 1;
+	if (options.l == 1)
+		size_width = get_size_width(lista);
+
 	while (lista != NULL)
 	{
 		if (!(lista->nombre[0] == '.' && options.a == 0))
 		{
+			if (options.l == 1)
+			{
+				print_permissions(lista->metadata.st_mode);
+				printf(" %lu ",
+					(unsigned long)lista->metadata.st_nlink);
+				print_owner(lista->metadata.st_uid);
+				print_group(lista->metadata.st_gid);
+				printf("%*lld ",
+					size_width,
+					(long long)lista->metadata.st_size);
+				print_date(lista->metadata.st_mtime);
+			}
 			printf("%s", lista->nombre);
-			if (lista->siguiente != NULL)
+			if (options.l == 1)
+				printf("\n");
+			else if (lista->siguiente != NULL)
 				printf("  ");
 			else
 				printf("\n");
@@ -66,7 +86,7 @@ int read_directory(char *directorio, t_ls_flags options)
 		actual = lista.primero;
 		while (actual != NULL)
 		{
-			if(S_ISDIR(actual->metadata.st_mode) && strcmp(actual->nombre, ".") != 0 && strcmp(actual->nombre, "..") != 0)
+			if(S_ISDIR(actual->metadata.st_mode) && strcmp(actual->nombre, ".") != 0 && strcmp(actual->nombre, "..") != 0 && (options.a == 1 || actual->nombre[0] != '.'))
 			{
 				printf("\n");
 				read_directory(actual->ruta, options);
