@@ -70,6 +70,15 @@
     void	print_group(uid_t gid);
     void	print_date(time_t mtime);
     int	get_size_width(t_ls_entry *lista);
+    void	print_names(t_ls_entry *lista, t_ls_flags options);
+    void	sort_list(t_ls_list *lista, t_ls_flags options);
+    int	classify_paths(int argc, char **argv, t_ls_list *archivos, t_ls_list *directorios, t_ls_error_list *errores, int *error);
+    int	process_files(t_ls_list *archivos, t_ls_flags options);
+    int	process_directories(t_ls_list *directorios, t_ls_list *archivos, t_ls_flags options);
+    void	print_file_type(mode_t mode);
+    void	print_symlink(char *ruta);
+    void	print_entry(t_ls_entry *entry, t_ls_flags options, int size_width);
+    void	append_entry(t_ls_list *lista, t_ls_entry *nodo);
     
     
 #endif

@@ -25,6 +25,15 @@ SRC = $(SRCDIR)/main.c \
 	  $(SRCDIR)/print_group.c \
 	  $(SRCDIR)/print_date.c \
 	  $(SRCDIR)/get_size_width.c \
+	  $(SRCDIR)/print_names.c \
+	  $(SRCDIR)/sort_list.c \
+	  $(SRCDIR)/classify_paths.c \
+      $(SRCDIR)/process_files.c \
+      $(SRCDIR)/process_directories.c \
+	  $(SRCDIR)/print_file_type.c \
+	  $(SRCDIR)/print_symlink.c \
+	  $(SRCDIR)/print_entry.c \
+	  $(SRCDIR)/append_entry.c \
 
 
 OBJ = $(SRC:$(SRCDIR)/%.c=$(OBJDIR)/%.o)

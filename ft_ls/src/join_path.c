@@ -10,7 +10,7 @@ char *join_path(char *directorio, char *nombre)
 	if (ruta == NULL)
 		return (NULL);
 	strcpy(ruta, directorio);
-	if (ruta[strlen(ruta) - 1] != '/')
+	if (strlen(ruta) > 0 && ruta[strlen(ruta) - 1] != '/')
     {
 		strcat(ruta, "/");
     }

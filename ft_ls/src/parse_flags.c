@@ -12,25 +12,15 @@ int	parse_flags(int argc, char **argv, t_ls_flags *flags)
     while (option != -1)
     {
         if (option == 'l')
-        {
            flags->l = 1; 
-        }
         if (option == 'R')
-        {
            flags->R = 1; 
-        }
         if (option == 'a')
-        {
            flags->a = 1; 
-        }
         if (option == 'r')
-        {
            flags->r = 1; 
-        }
         if (option == 't')
-        {
            flags->t = 1; 
-        }
         option = getopt(argc, argv, "lRart");
     }
     return(0);

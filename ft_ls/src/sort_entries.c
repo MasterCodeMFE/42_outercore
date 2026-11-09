@@ -1,10 +1,26 @@
 #include "ft_ls.h"
 
+static void	swap_entries(t_ls_entry *entry)
+{
+	char		*nombre;
+	char		*ruta;
+	struct stat	metadata;
+
+	nombre = entry->nombre;
+	ruta = entry->ruta;
+	metadata = entry->metadata;
+
+	entry->nombre = entry->siguiente->nombre;
+	entry->ruta = entry->siguiente->ruta;
+	entry->metadata = entry->siguiente->metadata;
+
+	entry->siguiente->nombre = nombre;
+	entry->siguiente->ruta = ruta;
+	entry->siguiente->metadata = metadata;
+}
+
 void	sort_entries(t_ls_list *lista)
 {
-    char *nombre;
-    char *ruta;
-    struct stat metadata;
     t_ls_entry *entry;
 
     entry = lista->primero;
@@ -12,15 +28,7 @@ void	sort_entries(t_ls_list *lista)
     {
         if (entry->siguiente != NULL && strcmp(entry->nombre, entry->siguiente->nombre) > 0)
         {
-            nombre = entry->nombre;
-            ruta = entry->ruta;
-            metadata = entry->metadata;
-            entry->nombre = entry->siguiente->nombre;
-            entry->ruta = entry->siguiente->ruta;
-            entry->metadata = entry->siguiente->metadata;
-            entry->siguiente->nombre = nombre;
-            entry->siguiente->ruta = ruta;
-            entry->siguiente->metadata = metadata;
+            swap_entries(entry);
             entry = lista->primero;
             continue;
         }
@@ -30,9 +38,6 @@ void	sort_entries(t_ls_list *lista)
 
 void	reverse_sort_entries(t_ls_list *lista)
 {
-    char *nombre;
-    char *ruta;
-    struct stat metadata;
     t_ls_entry *entry;
 
     entry = lista->primero;
@@ -40,15 +45,7 @@ void	reverse_sort_entries(t_ls_list *lista)
     {
         if (entry->siguiente != NULL && strcmp(entry->nombre, entry->siguiente->nombre) < 0)
         {
-            nombre = entry->nombre;
-            ruta = entry->ruta;
-            metadata = entry->metadata;
-            entry->nombre = entry->siguiente->nombre;
-            entry->ruta = entry->siguiente->ruta;
-            entry->metadata = entry->siguiente->metadata;
-            entry->siguiente->nombre = nombre;
-            entry->siguiente->ruta = ruta;
-            entry->siguiente->metadata = metadata;
+            swap_entries(entry);
             entry = lista->primero;
             continue;
         }
@@ -71,9 +68,6 @@ static int	compare_time(t_ls_entry *a, t_ls_entry *b)
 
 void	time_sort_entries(t_ls_list *lista)
 {
-    char *nombre;
-    char *ruta;
-    struct stat metadata;
     t_ls_entry *entry;
 
     entry = lista->primero;
@@ -81,15 +75,7 @@ void	time_sort_entries(t_ls_list *lista)
     {
         if (entry->siguiente != NULL && compare_time(entry, entry->siguiente) > 0)
         {
-            nombre = entry->nombre;
-            ruta = entry->ruta;
-            metadata = entry->metadata;
-            entry->nombre = entry->siguiente->nombre;
-            entry->ruta = entry->siguiente->ruta;
-            entry->metadata = entry->siguiente->metadata;
-            entry->siguiente->nombre = nombre;
-            entry->siguiente->ruta = ruta;
-            entry->siguiente->metadata = metadata;
+            swap_entries(entry);
             entry = lista->primero;
             continue;
         }
@@ -99,9 +85,6 @@ void	time_sort_entries(t_ls_list *lista)
 
 void	reverse_time_sort_entries(t_ls_list *lista)
 {
-    char *nombre;
-    char *ruta;
-    struct stat metadata;
     t_ls_entry *entry;
 
     entry = lista->primero;
@@ -109,15 +92,7 @@ void	reverse_time_sort_entries(t_ls_list *lista)
     {
         if (entry->siguiente != NULL && compare_time(entry, entry->siguiente) < 0)
         {
-            nombre = entry->nombre;
-            ruta = entry->ruta;
-            metadata = entry->metadata;
-            entry->nombre = entry->siguiente->nombre;
-            entry->ruta = entry->siguiente->ruta;
-            entry->metadata = entry->siguiente->metadata;
-            entry->siguiente->nombre = nombre;
-            entry->siguiente->ruta = ruta;
-            entry->siguiente->metadata = metadata;
+            swap_entries(entry);
             entry = lista->primero;
             continue;
         }

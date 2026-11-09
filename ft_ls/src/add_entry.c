@@ -27,14 +27,6 @@ int	add_entry(struct dirent *entrada, t_ls_list *lista, char *directorio)
 		free(nodo);
 		return (1);
 	}
-	nodo->siguiente = NULL;
-	if (lista->primero == NULL)
-	{
-		lista->primero = nodo;
-		lista->ultimo = nodo;
-		return (0);
-	}
-	lista->ultimo->siguiente = nodo;
-	lista->ultimo = nodo;
+	append_entry(lista, nodo);
 	return (0);
 }

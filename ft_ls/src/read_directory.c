@@ -1,99 +1,81 @@
 #include "ft_ls.h"
 
-void	print_names(t_ls_entry *lista, t_ls_flags options)
+static int	read_entries(DIR *opendirectory, t_ls_list *lista,
+		char *directorio)
 {
-	int	size_width;
+	struct dirent	*entrada;
 
-	size_width = 1;
-	if (options.l == 1)
-		size_width = get_size_width(lista);
-
-	while (lista != NULL)
+	entrada = readdir(opendirectory);
+	while (entrada != NULL)
 	{
-		if (!(lista->nombre[0] == '.' && options.a == 0))
-		{
-			if (options.l == 1)
-			{
-				print_permissions(lista->metadata.st_mode);
-				printf(" %lu ",
-					(unsigned long)lista->metadata.st_nlink);
-				print_owner(lista->metadata.st_uid);
-				print_group(lista->metadata.st_gid);
-				printf("%*lld ",
-					size_width,
-					(long long)lista->metadata.st_size);
-				print_date(lista->metadata.st_mtime);
-			}
-			printf("%s", lista->nombre);
-			if (options.l == 1)
-				printf("\n");
-			else if (lista->siguiente != NULL)
-				printf("  ");
-			else
-				printf("\n");
-		}
-		lista = lista->siguiente;
+		if (add_entry(entrada, lista, directorio) == 1)
+			return (1);
+		entrada = readdir(opendirectory);
 	}
+	return (0);
 }
 
-int read_directory(char *directorio, t_ls_flags options)
+static int	can_recurse(t_ls_entry *entry, t_ls_flags options)
 {
-    DIR				*opendirectory;
-    struct dirent	*entrada;
-    t_ls_entry		*actual;
-    t_ls_list		lista;
+	if (!S_ISDIR(entry->metadata.st_mode))
+		return (0);
+	if (strcmp(entry->nombre, ".") == 0)
+		return (0);
+	if (strcmp(entry->nombre, "..") == 0)
+		return (0);
+	if (options.a == 0 && entry->nombre[0] == '.')
+		return (0);
+	return (1);
+}
 
-    lista.primero = NULL;
-    lista.ultimo = NULL;
-    opendirectory = opendir(directorio);
-    if(opendirectory == NULL)
-    {
-        return(1);
-    }
-    entrada = readdir(opendirectory);
-    while(entrada != NULL)
-    {
-        if(add_entry(entrada, &lista, directorio) == 1)
-        {
-			closedir(opendirectory);
-			free_entries(&lista);
-            return (1);
-        }
-        entrada = readdir(opendirectory);
-    }
-	closedir(opendirectory);
-	if (options.t == 0)
+static int	recurse_directories(t_ls_list *lista, t_ls_flags options)
+{
+	int			error;
+	t_ls_entry	*actual;
+
+	error = 0;
+	actual = lista->primero;
+	while (actual != NULL)
 	{
-		if (options.r == 0)
-			sort_entries(&lista);
-		else
-			reverse_sort_entries(&lista);
-	}
-	else
-	{
-		if (options.r == 0)
-			time_sort_entries(&lista);
-		else
-			reverse_time_sort_entries(&lista);
-	}
-	if(options.R == 1)
-	{
-		printf("%s:\n", directorio);
-	}
-    print_names(lista.primero, options);
-	if(options.R == 1)
-	{
-		actual = lista.primero;
-		while (actual != NULL)
+		if (can_recurse(actual, options) == 1)
 		{
-			if(S_ISDIR(actual->metadata.st_mode) && strcmp(actual->nombre, ".") != 0 && strcmp(actual->nombre, "..") != 0 && (options.a == 1 || actual->nombre[0] != '.'))
-			{
-				printf("\n");
-				read_directory(actual->ruta, options);
-			}
-			actual = actual->siguiente;
+			printf("\n");
+			if (read_directory(actual->ruta, options) == 1)
+				error = 1;
 		}
+		actual = actual->siguiente;
+	}
+	return (error);
+}
+
+int	read_directory(char *directorio, t_ls_flags options)
+{
+	DIR			*opendirectory;
+	t_ls_list	lista;
+	int			error;
+
+	lista.primero = NULL;
+	lista.ultimo = NULL;
+	error = 0;
+	opendirectory = opendir(directorio);
+	if (opendirectory == NULL)
+		return (1);
+	if (read_entries(opendirectory, &lista, directorio) == 1)
+	{
+		closedir(opendirectory);
+		free_entries(&lista);
+		return (1);
+	}
+	closedir(opendirectory);
+	sort_list(&lista, options);
+	if (options.R == 1)
+		printf("%s:\n", directorio);
+	print_names(lista.primero, options);
+	if (options.R == 1)
+	{
+		if (recurse_directories(&lista, options) == 1)
+			error = 1;
 	}
 	free_entries(&lista);
-    return (0);
+	return (error);
 }
