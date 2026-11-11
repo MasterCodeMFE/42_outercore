@@ -1,34 +1,6 @@
 #include "ft_ls.h"
 
 /**
- * @brief Prints the permission bits of a file.
- *
- * @details Prints the nine permission characters used by the long format
- * of ls, divided into user, group, and other permissions.
- *
- * The function also handles the special permission bits:
- *
- * - 's' Set-user-ID or set-group-ID with execute permission.
- * - 'S' Set-user-ID or set-group-ID without execute permission.
- * - 't' Sticky bit with execute permission.
- * - 'T' Sticky bit without execute permission.
- *
- * The resulting permission format is:
- *
- * user  -> rwx
- * group -> rwx
- * other -> rwx
- *
- * @param mode File mode containing the permission and special mode bits.
- */
-void	print_permissions(mode_t mode)
-{
-	print_user_permissions(mode);
-	print_group_permissions(mode);
-	print_other_permissions(mode);
-}
-
-/**
  * @brief Prints the user permission bits.
  *
  * @details Prints the read, write, and execute permissions for the file
@@ -141,4 +113,32 @@ static void	print_other_permissions(mode_t mode)
 		printf("x");
 	else
 		printf("-");
+}
+
+/**
+ * @brief Prints the permission bits of a file.
+ *
+ * @details Prints the nine permission characters used by the long format
+ * of ls, divided into user, group, and other permissions.
+ *
+ * The function also handles the special permission bits:
+ *
+ * - 's' Set-user-ID or set-group-ID with execute permission.
+ * - 'S' Set-user-ID or set-group-ID without execute permission.
+ * - 't' Sticky bit with execute permission.
+ * - 'T' Sticky bit without execute permission.
+ *
+ * The resulting permission format is:
+ *
+ * user  -> rwx
+ * group -> rwx
+ * other -> rwx
+ *
+ * @param mode File mode containing the permission and special mode bits.
+ */
+void	print_permissions(mode_t mode)
+{
+	print_user_permissions(mode);
+	print_group_permissions(mode);
+	print_other_permissions(mode);
 }
