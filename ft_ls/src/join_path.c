@@ -1,19 +1,38 @@
 #include "ft_ls.h"
 
-char *join_path(char *directorio, char *nombre)
+/**
+ * @brief Builds a full path from a directory path and an entry name.
+ *
+ * @details Allocates a new string containing the directory path followed
+ * by the entry name.
+ *
+ * If the directory path does not already end with '/', a path separator
+ * is added before appending the entry name.
+ *
+ * For example:
+ *
+ * directory = "/tmp/test"
+ * name      = "file.txt"
+ * result    = "/tmp/test/file.txt"
+ *
+ * @param directory Directory path used as the base path.
+ * @param name      Name of the entry to append to the directory path.
+ *
+ * @return A newly allocated string containing the complete path,
+ *         or NULL if memory allocation fails.
+ */
+char	*join_path(char *directory, char *name)
 {
-	char	*ruta;
+	char	*path;
 	size_t	len;
 
-	len = strlen(directorio) + strlen(nombre) + 2;
-	ruta = malloc(sizeof(char) * len);
-	if (ruta == NULL)
+	len = strlen(directory) + strlen(name) + 2;
+	path = malloc(sizeof(char) * len);
+	if (path == NULL)
 		return (NULL);
-	strcpy(ruta, directorio);
-	if (strlen(ruta) > 0 && ruta[strlen(ruta) - 1] != '/')
-    {
-		strcat(ruta, "/");
-    }
-    strcat(ruta, nombre);
-	return (ruta);
+	strcpy(path, directory);
+	if (strlen(path) > 0 && path[strlen(path) - 1] != '/')
+		strcat(path, "/");
+	strcat(path, name);
+	return (path);
 }

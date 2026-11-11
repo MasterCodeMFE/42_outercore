@@ -1,32 +1,55 @@
 #include "ft_ls.h"
 
-int	add_entry(struct dirent *entrada, t_ls_list *lista, char *directorio)
+/**
+ * @brief Creates and appends a new entry to the directory entry list.
+ *
+ * @details Allocates a new t_ls_entry node and initializes it with the
+ * information obtained from the directory entry.
+ *
+ * The function performs the following operations:
+ *
+ * - Allocates memory for a new t_ls_entry node.
+ * - Copies the entry name returned by readdir().
+ * - Builds the complete path using join_path().
+ * - Retrieves the entry metadata using lstat().
+ * - Appends the initialized node to the provided list.
+ *
+ * If any memory allocation or lstat() operation fails, all previously
+ * allocated resources are released before returning an error.
+ *
+ * @param entry     Directory entry returned by readdir().
+ * @param list      List where the new entry will be appended.
+ * @param directory Path of the directory containing the entry.
+ *
+ * @return 0 on success, or 1 if memory allocation or lstat() fails.
+ */
+int	add_entry(struct dirent *entry, t_ls_list *list, char *directory)
 {
-	t_ls_entry	*nodo;
+	t_ls_entry	*node;
 
-	nodo = malloc(sizeof(t_ls_entry));
-	if (nodo == NULL)
+	node = malloc(sizeof(t_ls_entry));
+	if (node == NULL)
 		return (1);
-	nodo->nombre = strdup(entrada->d_name);
-	if (nodo->nombre == NULL)
+	node->name = strdup(entry->d_name);
+	if (node->name == NULL)
 	{
-		free(nodo);
+		free(node);
 		return (1);
 	}
-	nodo->ruta = join_path(directorio, entrada->d_name);
-	if (nodo->ruta == NULL)
+	node->path = join_path(directory, entry->d_name);
+	if (node->path == NULL)
 	{
-		free(nodo->nombre);
-		free(nodo);
+		free(node->name);
+		free(node);
 		return (1);
 	}
-	if (lstat(nodo->ruta, &nodo->metadata) == -1)
+	if (lstat(node->path, &node->metadata) == -1)
 	{
-		free(nodo->ruta);
-		free(nodo->nombre);
-		free(nodo);
+		free(node->path);
+		free(node->name);
+		free(node);
 		return (1);
 	}
-	append_entry(lista, nodo);
+	append_entry(list, node);
 	return (0);
 }

@@ -1,19 +1,36 @@
 #include "ft_ls.h"
 
-void	free_entries(t_ls_list *lista)
+/**
+ * @brief Frees all entries stored in a list.
+ *
+ * @details Iterates through the linked list and releases all dynamically
+ * allocated memory associated with each entry.
+ *
+ * For every node, the function frees:
+ *
+ * - The entry name.
+ * - The complete entry path.
+ * - The entry node itself.
+ *
+ * After all nodes have been released, the first and last pointers of the
+ * list are reset to NULL, leaving the list in an empty state.
+ *
+ * @param list List containing the entries to free.
+ */
+void	free_entries(t_ls_list *list)
 {
-	t_ls_entry	*actual;
-	t_ls_entry	*siguiente;
+	t_ls_entry	*current;
+	t_ls_entry	*next;
 
-	actual = lista->primero;
-	while (actual != NULL)
+	current = list->first;
+	while (current != NULL)
 	{
-		siguiente = actual->siguiente;
-		free(actual->nombre);
-		free(actual->ruta);
-		free(actual);
-		actual = siguiente;
+		next = current->next;
+		free(current->name);
+		free(current->path);
+		free(current);
+		current = next;
 	}
-	lista->primero = NULL;
-	lista->ultimo = NULL;
+	list->first = NULL;
+	list->last = NULL;
 }

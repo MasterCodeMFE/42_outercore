@@ -1,24 +1,46 @@
 #include "ft_ls.h"
 
-int	process_files(t_ls_list *archivos, t_ls_flags options)
+/**
+ * @brief Processes all file arguments.
+ *
+ * @details Sorts the file list according to the active options and processes
+ * each file using read_file().
+ *
+ * When the -l option is enabled, the column widths required for long-format
+ * output are calculated before printing the entries.
+ *
+ * When long-format output is disabled and the list contains files, a final
+ * newline is printed after all file entries have been processed.
+ *
+ * The function preserves any error returned while processing the files.
+ *
+ * @param files   List containing the file arguments to process.
+ * @param options Active ft_ls options.
+ *
+ * @return 0 on success, or 1 if an error occurs while processing a file.
+ */
+int	process_files(t_ls_list *files, t_ls_flags options)
 {
 	int			error;
-	int			size_width;
-	t_ls_entry	*actual;
+	t_ls_widths	widths;
+	t_ls_entry	*current;
 
 	error = 0;
-	size_width = 1;
-	sort_list(archivos, options);
+	widths.links = 1;
+	widths.owner = 1;
+	widths.group = 1;
+	widths.size = 1;
+	sort_list(files, options);
 	if (options.l == 1)
-		size_width = get_size_width(archivos->primero);
-	actual = archivos->primero;
-	while (actual != NULL)
+		widths = get_widths(files->first, options);
+	current = files->first;
+	while (current != NULL)
 	{
-		if (read_file(actual, options, size_width) == 1)
+		if (read_file(current, options, widths) == 1)
 			error = 1;
-		actual = actual->siguiente;
+		current = current->next;
 	}
-	if (archivos->primero != NULL && options.l == 0)
+	if (files->first != NULL && options.l == 0)
 		printf("\n");
 	return (error);
 }

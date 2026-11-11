@@ -24,7 +24,7 @@ SRC = $(SRCDIR)/main.c \
 	  $(SRCDIR)/print_owner.c \
 	  $(SRCDIR)/print_group.c \
 	  $(SRCDIR)/print_date.c \
-	  $(SRCDIR)/get_size_width.c \
+	  $(SRCDIR)/get_widths.c \
 	  $(SRCDIR)/print_names.c \
 	  $(SRCDIR)/sort_list.c \
 	  $(SRCDIR)/classify_paths.c \
@@ -34,6 +34,9 @@ SRC = $(SRCDIR)/main.c \
 	  $(SRCDIR)/print_symlink.c \
 	  $(SRCDIR)/print_entry.c \
 	  $(SRCDIR)/append_entry.c \
+	  $(SRCDIR)/print_total.c \
+	  $(SRCDIR)/print_size.c \
+
 
 
 OBJ = $(SRC:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
