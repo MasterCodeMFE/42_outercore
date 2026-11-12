@@ -38,6 +38,14 @@ Se han excluido proyectos del common core antiguo y nuevo, además de contenidos
 - Pendientes: 160
 - Progreso: 11%
 
+### Hecho / No hecho
+
+| Estado | Descripción |
+| --- | --- |
+| ✅ Hecho | Proyectos ya realizados o cerrados 
+| ⏳ En proceso | Proyecto que actualmente se está desarrollando |
+| ⬜ No hecho | Proyectos pendientes por completar |
+
 ---
 
 ## Roadmap completo
