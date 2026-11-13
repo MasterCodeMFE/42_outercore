@@ -28,6 +28,7 @@ int	process_paths(int argc, char **argv, t_ls_flags options)
 {
 	int				error;
 	int				current_error;
+	int				multiple;
 	t_ls_error_list	errors;
 	t_ls_list		files;
 	t_ls_list		directories;
@@ -41,14 +42,14 @@ int	process_paths(int argc, char **argv, t_ls_flags options)
 	error = 0;
 	if (optind == argc)
 	{
-		current_error = read_directory(".", options);
+		current_error = read_directory(".", options, 0);
 		if (current_error > error)
 			error = current_error;
 	}
 	else
 	{
-		current_error = classify_paths(argc, argv, &files,
-				&directories, &errors, &error);
+		multiple = (argc - optind > 1);
+		current_error = classify_paths(argc, argv, &files, &directories, &errors, &error, options);
 		if (current_error > error)
 			error = current_error;
 		if (current_error == 0)
@@ -59,8 +60,7 @@ int	process_paths(int argc, char **argv, t_ls_flags options)
 				error = current_error;
 			if (files.first != NULL && directories.first != NULL)
 				printf("\n");
-			current_error = process_directories(&directories,
-					&files, options);
+			current_error = process_directories(&directories, &files, options, multiple);
 			if (current_error > error)
 				error = current_error;
 		}

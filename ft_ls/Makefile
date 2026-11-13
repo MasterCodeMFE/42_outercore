@@ -11,7 +11,6 @@ SRC = $(SRCDIR)/main.c \
 	  $(SRCDIR)/add_entry.c \
 	  $(SRCDIR)/read_directory.c \
 	  $(SRCDIR)/join_path.c \
-	  $(SRCDIR)/sort_entries.c \
 	  $(SRCDIR)/parse_flags.c \
 	  $(SRCDIR)/process_paths.c \
 	  $(SRCDIR)/free_entries.c \

@@ -16,24 +16,21 @@
  * - major() identifies the device driver or device class.
  * - minor() identifies the specific device managed by that driver.
  *
- * The device numbers are displayed using the "major, minor" format
- * used by ls.
+ * The major and minor fields are right-aligned independently using their
+ * respective maximum widths. This keeps the comma and both number columns
+ * aligned across a listing.
  *
  * @param entry  Entry containing the file metadata.
  * @param widths Structure containing the column widths used for alignment.
  */
 void	print_size(t_ls_entry *entry, t_ls_widths widths)
 {
-	if (S_ISCHR(entry->metadata.st_mode)
-		|| S_ISBLK(entry->metadata.st_mode))
+	if (S_ISCHR(entry->metadata.st_mode) || S_ISBLK(entry->metadata.st_mode))
 	{
-		printf("%u, %u ",
-			major(entry->metadata.st_rdev),
-			minor(entry->metadata.st_rdev));
+		printf("%*u, %*u ", widths.device_major, major(entry->metadata.st_rdev), widths.device_minor, minor(entry->metadata.st_rdev));
 	}
 	else
 	{
-		printf("%*lld ", widths.size,
-			(long long)entry->metadata.st_size);
+		printf("%*lld ", widths.size, (long long)entry->metadata.st_size);
 	}
 }

@@ -10,7 +10,8 @@
  * output are calculated before printing the entries.
  *
  * When long-format output is disabled and the list contains files, a final
- * newline is printed after all file entries have been processed.
+ * newline is printed after every file entry when long-format output is
+ * disabled.
  *
  * The function preserves any error returned while processing the files.
  *
@@ -23,6 +24,7 @@ int	process_files(t_ls_list *files, t_ls_flags options)
 {
 	int			error;
 	t_ls_widths	widths;
+	t_ls_flags	width_options;
 	t_ls_entry	*current;
 
 	error = 0;
@@ -30,17 +32,23 @@ int	process_files(t_ls_list *files, t_ls_flags options)
 	widths.owner = 1;
 	widths.group = 1;
 	widths.size = 1;
+	widths.device_major = 1;
+	widths.device_minor = 1;
 	sort_list(files, options);
 	if (options.l == 1)
-		widths = get_widths(files->first, options);
+	{
+		width_options = options;
+		width_options.a = 1;
+		widths = get_widths(files->first, width_options);
+	}
 	current = files->first;
 	while (current != NULL)
 	{
 		if (read_file(current, options, widths) == 1)
 			error = 1;
+		if (options.l == 0)
+			printf("\n");
 		current = current->next;
 	}
-	if (files->first != NULL && options.l == 0)
-		printf("\n");
 	return (error);
 }
