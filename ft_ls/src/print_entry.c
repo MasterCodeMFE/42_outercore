@@ -28,10 +28,15 @@ void	print_entry(t_ls_entry *entry, t_ls_flags options, t_ls_widths widths)
 {
 	if (options.l == 1)
 	{
+		if (entry->metadata_valid == 0)
+		{
+			print_file_type(entry->metadata.st_mode);
+			printf("????????? ? ? ? ?            ? %s\n", entry->name);
+			return ;
+		}
 		print_file_type(entry->metadata.st_mode);
 		print_permissions(entry->metadata.st_mode);
-		printf(" %*lu ", widths.links,
-			(unsigned long)entry->metadata.st_nlink);
+		printf(" %*lu ", widths.links, (unsigned long)entry->metadata.st_nlink);
 		print_owner(entry->metadata.st_uid, widths.owner);
 		print_group(entry->metadata.st_gid, widths.group);
 		print_size(entry, widths);

@@ -44,6 +44,7 @@ int	add_path(t_ls_list *list, char *path, struct stat metadata)
 		return (1);
 	}
 	node->metadata = metadata;
+	node->metadata_valid = 1;
 	append_entry(list, node);
 	return (0);
 }

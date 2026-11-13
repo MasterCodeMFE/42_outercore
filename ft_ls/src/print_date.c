@@ -11,7 +11,7 @@
  *
  * - Recent files display the month, day, hour, and minute.
  * - Files older than approximately six months display the year.
- * - Files more than one hour in the future also display the year.
+ * - Files with a modification time in the future display the year.
  *
  * The resulting formats are:
  *
@@ -34,7 +34,7 @@ void	print_date(time_t mtime)
 	time_info = localtime(&mtime);
 	if (time_info == NULL)
 		return ;
-	if (diff > 15778476 || diff < -3600)
+	if (diff > 15778476 || diff < 0)
 		strftime(buffer, sizeof(buffer), "%b %e  %Y", time_info);
 	else
 		strftime(buffer, sizeof(buffer), "%b %e %H:%M", time_info);
